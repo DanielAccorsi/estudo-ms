@@ -1,18 +1,20 @@
 package br.com.estudo.ms.ms1.exceptions;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 public class ExceptionResponse implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
-    private Date timestamp;
-    private String message;
-    private String detais;
+    private final Date timestamp;
+    private final String message;
+    private final String details;
 
-    public ExceptionResponse(Date timestamp, String message, String detais) {
+    public ExceptionResponse(Date timestamp, String message, String details) {
         this.timestamp = timestamp;
         this.message = message;
-        this.detais = detais;
+        this.details = details;
     }
 
     public Date getTimestamp() {
@@ -23,7 +25,7 @@ public class ExceptionResponse implements Serializable {
         return message;
     }
 
-    public String getDetais() {
-        return detais;
+    public String getDetails() {
+        return details;
     }
 }

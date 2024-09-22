@@ -1,6 +1,8 @@
-package br.com.estudo.ms.ms1;
+package br.com.estudo.ms.ms1.controllers;
 
+import br.com.estudo.ms.ms1.converters.NumberConverter;
 import br.com.estudo.ms.ms1.exceptions.UnsupportedMathOperationException;
+import br.com.estudo.ms.ms1.math.SimpleMath;
 import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -8,6 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MathController {
 
     private  final AtomicLong counter = new AtomicLong();
+    private SimpleMath math = new SimpleMath();
+
 
     @RequestMapping(value = "/sum/{numberOne}/{numberTwo}", method = RequestMethod.GET)
     public Double sum(
@@ -15,10 +19,10 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception{
 
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+        if (!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
             throw new UnsupportedMathOperationException("Please, set a numeric value");
         }
-        return convertToDouble(numberOne) + convertToDouble(numberTwo);
+        return math.sum(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
     }
 
     @RequestMapping(value = "/sub/{numberOne}/{numberTwo}", method = RequestMethod.GET)
@@ -27,7 +31,7 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception{
 
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+        if (!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
             throw new UnsupportedMathOperationException("Please, set a numeric value");
         }
 
@@ -35,19 +39,8 @@ public class MathController {
             throw new UnsupportedMathOperationException("The first number is minor than second.");
         }
 
-        return convertToDouble(numberOne) - convertToDouble(numberTwo);
+        return math.sub(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
     }
 
-    private Double convertToDouble(String strNumber) {
-        if (strNumber == null) return 0D;
-        String number = strNumber.replaceAll(",",".");
-        if (isNumeric(number)) return Double.parseDouble(number);
-        return 0D;
-    }
 
-    private boolean isNumeric(String strNumber) {
-        if (strNumber == null) return false;
-        String number = strNumber.replaceAll(",",".");
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
-    }
 }
