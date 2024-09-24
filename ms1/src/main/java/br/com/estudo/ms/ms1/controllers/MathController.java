@@ -1,7 +1,7 @@
 package br.com.estudo.ms.ms1.controllers;
 
 import br.com.estudo.ms.ms1.converters.NumberConverter;
-import br.com.estudo.ms.ms1.exceptions.UnsupportedMathOperationException;
+import br.com.estudo.ms.ms1.exceptions.ResourceNotFoundException;
 import br.com.estudo.ms.ms1.math.SimpleMath;
 import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -20,7 +20,7 @@ public class MathController {
     ) throws Exception{
 
         if (!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationException("Please, set a numeric value");
+            throw new ResourceNotFoundException("Please, set a numeric value");
         }
         return math.sum(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
     }
@@ -32,11 +32,11 @@ public class MathController {
     ) throws Exception{
 
         if (!NumberConverter.isNumeric(numberOne) || !NumberConverter.isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationException("Please, set a numeric value");
+            throw new ResourceNotFoundException("Please, set a numeric value");
         }
 
         if (Long.parseLong(numberOne) < Long.parseLong(numberTwo)) {
-            throw new UnsupportedMathOperationException("The first number is minor than second.");
+            throw new ResourceNotFoundException("The first number is minor than second.");
         }
 
         return math.sub(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
